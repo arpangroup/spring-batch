@@ -168,27 +168,42 @@ public class ChunksConfig {
   @Bean
   protected Step step1() {
     return new StepBuilder("processLines", jobRepository)
-            .<Line, Line> chunk(2, transactionManager) // read, process and write two lines at a time.
+            .<SalesInfoDTO, SalesInfoEntity> chunk(2, transactionManager) // read, process and write two lines at a time.
             .reader(reader)
             .processor(processor)
             .writer(writer)
             .build();
   }
 
-  @Bean
-  public ItemReader<Line> itemReader() {
-    return new LineReader();
-  }
+   @Bean
+   public FlatFileItemReader<SalesInfoDTO> salesInfoFileReader(){
+      return new FlatFileItemReaderBuilder<SalesInfoDTO>()
+              .resource(new ClassPathResource("input.csv"))
+              .name("salesInfoFileReader")
+              .delimited()
+              .delimiter(",")
+              .names(new String[]{"product","seller","sellerId","price","city","category"})
+              .linesToSkip(1)
+              .targetType(SalesInfoDTO.class)
+              .build();
+   }
 
-  @Bean
-  public ItemProcessor<Line, Line> itemProcessor() {
-    return new LineProcessor();
-  }
 
-  @Bean
-  public ItemWriter<Line> itemWriter() {
-    return new LinesWriter();
-  }
+
+   public class SalesInfoItemProcessor implements ItemProcessor<SalesInfoDTO, SalesInfoEntity> {
+      @Override
+      public ProductEntity process(SalesInfoDTO item) throws Exception {
+         log.info("processing the item: {}",item.toString());
+         return mapper.mapToEntity(item);
+      }
+   }
+
+   @Bean
+   public JpaItemWriter<ProductEntity> salesInfoItemWriter(){
+      return new JpaItemWriterBuilder<SalesInfo>()
+              .entityManagerFactory(entityManagerFactory)
+              .build();
+   }
 }
 ````
 In this case, there’s only one step performing only one tasklet.

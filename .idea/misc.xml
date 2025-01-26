@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/cloud-native-batch/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-native-batch/batch-job/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-native-batch/rest-service/pom.xml" />
+        <option value="$PROJECT_DIR$/01-batch-basic/pom.xml" />
       </list>
     </option>
   </component>

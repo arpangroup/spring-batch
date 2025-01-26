@@ -1,6 +1,12 @@
 # spring-batch
 1. [**Tasklet** based Step Vs **Chunk** based Step](Readme-tasklet_vs_chunk.md)
-2. Listeners: (JobExecutionListener, StepExecutionListener, ProcessListener, Retry Listener, Skip Listener etc....)
+2. Listeners:
+   - JobExecutionListener with Micrometer
+   - StepExecutionListener
+   - ProcessListener
+   - Retry Listener
+   - Skip Listener
+   - ChunkListener
 3. Fault Talarant: Retry / Skip / Circuit Breaker
 4. Async
 5. Spring Batch Test
